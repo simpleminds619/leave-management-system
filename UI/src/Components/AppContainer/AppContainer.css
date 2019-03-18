@@ -1,0 +1,17 @@
+.logo {
+    height: 25px;
+    margin: 16px;
+    font-weight: bolder;
+    color: white;
+    padding: 5px;
+    display: flex;
+    flex-direction: row;
+}
+.trigger:hover {
+    color: #1890ff;
+}
+.profilePic{
+    cursor:'pointer';
+    display: inline-block;
+    padding: 3px;
+}
