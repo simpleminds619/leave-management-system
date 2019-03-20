@@ -6,6 +6,7 @@ import './AppContainer.css';
 import AppRoute from '../../routes';
 
 const { Content, Sider, Header, Footer } = Layout;
+const { SubMenu } = Menu;
 
 class AppContainer extends Component {
     state = {
@@ -37,8 +38,8 @@ class AppContainer extends Component {
                                 />
                                 <div style={{ visibility: this.state.collapsed ? 'hidden' : 'visible' }}>L M S</div>
                             </div>
-                            <Menu theme="dark" mode="inline" defaultSelectedKeys={['home']}>
-                                <Menu.Item key="home" style={{ textAlign: 'left' }}>
+                            <Menu theme="dark" mode="inline" inlineCollapsed={this.state.collapsed} selectedKeys={['/']}>
+                                <Menu.Item key="/" style={{ textAlign: 'left' }}>
                                     <Icon type="home" theme="filled" />
                                     <span>Home</span>
                                     <Link to="/" />
@@ -46,29 +47,36 @@ class AppContainer extends Component {
                                 <Menu.Item key="leaves" style={{ textAlign: 'left' }}>
                                     <Icon type="mail" theme="filled" />
                                     <span>Leaves</span>
-                                    <Link to="/about" />
+                                    <Link to="/leaves" />
                                 </Menu.Item>
-                                <Menu.Item key="settings" style={{ textAlign: 'left' }}>
-                                    <Icon type="setting" theme="filled" />
-                                    <span>Settings</span>
-                                    <Link to="/contact" />
-                                </Menu.Item>
+                                <SubMenu key="settings" style={{ marginLeft: this.state.collapsed ? 0 : -70 }} title={<span><Icon type="setting" theme="filled" /><span>Settings</span></span>}>
+                                    <Menu.Item key="/holidaysList" style={{margin:0,paddingRight:43}}>
+                                        <Icon type="bars" />
+                                        <span>Holidays List</span>
+                                        <Link to="/holidayslist" />
+                                    </Menu.Item>
+                                    <Menu.Item key="/leaveCategories" style={{margin:0}}>
+                                        <Icon type="bars" />
+                                        <span>Leave Categories</span>
+                                        <Link to="/leaveCategories" />
+                                    </Menu.Item>
+                                </SubMenu>
                             </Menu>
                         </Sider>
                         <Layout>
                             <Header style={{ background: '#fff', padding: 0, textAlign: 'left' }}>
-                                <div style={{fontSize:30,marginRight:30,float:'right', cursor:'pointer' }}>                                   
+                                <div style={{ fontSize: 30, marginRight: 30, float: 'right', cursor: 'pointer' }}>
                                     <Popover trigger="click" placement="bottomLeft" arrowPointAtCenter content={
                                         <List size="small" >
                                             <List.Item>
-                                                <span style={{cursor:'pointer',width:100}}>
-                                                    <Icon type="user" style={{paddingRight:10}} />
+                                                <span style={{ cursor: 'pointer', width: 100 }}>
+                                                    <Icon type="user" style={{ paddingRight: 10 }} />
                                                     Profile
                                                 </span>
                                             </List.Item>
                                             <List.Item>
-                                                <span style={{cursor:'pointer'}}>
-                                                    <Icon type="logout" style={{paddingRight:10}} />
+                                                <span style={{ cursor: 'pointer' }}>
+                                                    <Icon type="logout" style={{ paddingRight: 10 }} />
                                                     Logout
                                                 </span>
                                             </List.Item>
@@ -76,9 +84,9 @@ class AppContainer extends Component {
                                     }>
                                         <Icon type="user" />
                                     </Popover>
-                                </div>                               
+                                </div>
                             </Header>
-                            <Content style={{ marginTop: '24px',background: '#fff', minHeight: 600 }}>
+                            <Content style={{ marginTop: '24px', background: '#fff', minHeight: 600 }}>
                                 <AppRoute />
                             </Content>
                             <Footer>
