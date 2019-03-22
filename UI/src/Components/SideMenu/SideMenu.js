@@ -16,7 +16,6 @@ class SideMenu extends Component {
     
     render() {
         const { location } = this.props;
-        console.log(location);
         return (
             <Sider
                 trigger={null}

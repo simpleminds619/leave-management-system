@@ -14,7 +14,6 @@ class AppContainer extends Component {
         selectedKey: ['/']
     };
     render() {
-        console.log(this);
         return (
             <div>
                 <Router>

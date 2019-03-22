@@ -1,38 +1,65 @@
 import React, { Component } from 'react';
-import { Table, Icon, Button, Drawer } from 'antd';
+import { Table, Icon, Button, Drawer, Modal } from 'antd';
 import LeaveCategoryForm from '../../../Components/LeaveCategoryForm/LeaveCategoryForm';
 import './leavecategories.page.css';
 
 class LeaveCategories extends Component {
-    state={
-        isFormDrawerVisible:false,
-        leaveCategories:[],
-        isLoading:true,
-        selectedLeaveCategory:null,
-        isReadOnlyForm:false
+    state = {
+        isFormDrawerVisible: false,
+        leaveCategories: [],
+        isLoading: true,
+        selectedLeaveCategory: null,
+        isReadOnlyForm: false
     }
 
-    onView = () =>{
-        setTimeout(() =>{
+    onView = () => {
+        setTimeout(() => {
             this.setState({
                 isReadOnlyForm: true,
                 isFormDrawerVisible: true,
             });
-        },10);
+        }, 10);
     }
-    
+
     onEdit = () => {
-        setTimeout(() =>{
+        setTimeout(() => {
             this.setState({
                 isReadOnlyForm: false,
                 isFormDrawerVisible: true,
             });
-        },10);
+        }, 10);
     }
-    
-    columns = [{
-        title: 'Name',
-        dataIndex: 'name'
+
+    onDelete = () =>{
+        setTimeout(() => {
+            Modal.confirm({
+                title:'Delete Leave Category',
+                content:'Are you sure to delete '+this.state.selectedLeaveCategory.name+' ?',
+                okText:'Delete',
+                cancelText:'Cancel',
+                onOk:()=>{
+                    console.log("You deleted the item");
+                },
+                okButtonProps:{
+                    type:'primary',
+                    style:{
+                        backgroundColor:'red',
+                        color:'white'
+                    }
+                }
+            })
+        }, 10);
+    }
+
+    columns = [
+        {
+            title: 'Category Id',
+            dataIndex: 'id',
+            align: 'center'
+        },
+        {
+            title: 'Name',
+            dataIndex: 'name'
         },
         {
             title: 'Total Leaves',
@@ -53,10 +80,10 @@ class LeaveCategories extends Component {
             title: 'Status',
             dataIndex: 'status',
             align: 'center',
-            render: (text)=> (
-                text === 'Active'?
-                    <Icon type="check-circle" style={{color:'green', fontSize:16}} />
-                    : <Icon type="close-circle" style={{color:'red', fontSize:16}} />
+            render: (text) => (
+                text === 'Active' ?
+                    <Icon type="check-circle" style={{ color: 'green', fontSize: 16 }} />
+                    : <Icon type="close-circle" style={{ color: 'red', fontSize: 16 }} />
             )
         },
         {
@@ -65,57 +92,50 @@ class LeaveCategories extends Component {
                 <div style={{ fontSize: 16 }}>
                     <Icon type="eye" onClick={this.onView} style={{ fontSize: 20, color: 'black', margin: 10, cursor: 'pointer' }} />
                     <Icon type="edit" onClick={this.onEdit} style={{ fontSize: 20, color: 'blue', margin: 10, cursor: 'pointer' }} />
-                    <Icon type="delete" style={{ fontSize: 20, color: 'red', margin: 10, cursor: 'pointer' }} />
+                    <Icon type="delete" onClick={this.onDelete} style={{ fontSize: 20, color: 'red', margin: 10, cursor: 'pointer' }} />
                 </div>
             ),
             align: 'center',
         }
     ]
-    
-    rowSelection = {
-        onChange: (selectedRowKeys, selectedRows) => {
-            console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-        }
-    };
 
-    componentDidMount(){
+    componentDidMount() {
         this.props.fetchLeaveCategoriesAsync();
-        if(this.props.isLoading === false){
+        if (this.props.isLoading === false) {
             this.setState({
                 leaveCategories: this.props.leaveCategories,
-                isLoading:this.props.isLoading
+                isLoading: this.props.isLoading
             });
         }
     }
 
-    componentDidUpdate(prevProps, prevState){
-        if((this.props.isLoading === false && prevProps.isLoading === true) ||
+    componentDidUpdate(prevProps, prevState) {
+        if ((this.props.isLoading === false && prevProps.isLoading === true) ||
             (this.state.isLoading === false && prevState.isLoading === true)) {
             this.setState({
                 leaveCategories: this.props.leaveCategories,
-                isLoading:this.props.isLoading
+                isLoading: this.props.isLoading
             });
         }
     }
 
     createNewCategory = () => {
         this.setState({
-          isFormDrawerVisible: true,
-          selectedLeaveCategory: null,
-          isReadOnlyForm:false
-        });
-      };
-    
-    onClose = () => {
-        this.setState({
-          isFormDrawerVisible: false,
+            isFormDrawerVisible: true,
+            selectedLeaveCategory: null,
+            isReadOnlyForm: false
         });
     };
-    
-    setSelectedRow = (record) =>  {
-        console.log(record);
+
+    onClose = () => {
         this.setState({
-            selectedLeaveCategory : record
+            isFormDrawerVisible: false,
+        });
+    };
+
+    setSelectedRow = (record) => {
+        this.setState({
+            selectedLeaveCategory: record
         });
     }
 
@@ -131,7 +151,7 @@ class LeaveCategories extends Component {
                     bordered
                     title={() => (<div style={{ fontSize: 18, fontWeight: 'bolder', color: '#031e47' }}>Leave Categories</div>)}
                     pagination={false}
-                    onRow={(record)=>({
+                    onRow={(record) => ({
                         onClick: () => {
                             this.setSelectedRow(record);
                         }
@@ -142,7 +162,7 @@ class LeaveCategories extends Component {
                         <Icon type="plus" /> New Category
                     </Button>
                     <Drawer
-                        title="New Leave Category"
+                        title={this.state.selectedLeaveCategory? "Leave Category" : "New Leave Category"}
                         width={500}
                         onClose={this.onClose}
                         visible={this.state.isFormDrawerVisible}
@@ -150,12 +170,13 @@ class LeaveCategories extends Component {
                             overflow: 'auto',
                             height: 'calc(100% - 108px)',
                             paddingBottom: '108px',
-                        }}                        
+                        }}
+                        destroyOnClose={true}
                     >
-                        <LeaveCategoryForm onCancel={this.onClose} 
-                                        onSubmit={this.onClose} 
-                                        readonly={this.state.isReadOnlyForm} 
-                                        formData={this.state.selectedLeaveCategory}/>
+                        <LeaveCategoryForm onCancel={this.onClose}
+                            onSubmit={this.onClose}
+                            readonly={this.state.isReadOnlyForm}
+                            formData={this.state.selectedLeaveCategory} />
                     </Drawer>
                 </div>
             </div>
