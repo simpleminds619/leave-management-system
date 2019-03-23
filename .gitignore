@@ -59,3 +59,10 @@ typings/
 
 # next.js build output
 .next
+Api/LeaveManagementSystem.Api/LeaveManagementSystem.Data/obj/
+Api/LeaveManagementSystem.Api/LeaveManagementSystem.Data/bin/
+*/obj
+Api/LeaveManagementSystem.Api/LeaveManagementSystem.Common/obj/
+Api/LeaveManagementSystem.Api/LeaveManagementSystem.Api/obj/
+Api/LeaveManagementSystem.Api/LeaveManagementSystem.Api/bin/
+Api/LeaveManagementSystem.Api/.vs/LeaveManagementSystem.Api/v15/
