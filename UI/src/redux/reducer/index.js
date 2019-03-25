@@ -8,6 +8,17 @@ const {selectors, actions, superReducer} = reduxCornell({
                 message:"Welcome message from configured store...!!!",
             },           
             loaded:false
+        },
+        LeaveCategories:{
+            data:{ 
+                    leaveCategories:[], 
+                    newLeaveCategory:null,
+                    updatedLeaveCategory:null,
+                    deleteSucceded:false
+                },
+            loaded:false,
+            error:null,
+            isAjaxProcessing: false
         }
     }
 });

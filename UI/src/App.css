@@ -31,3 +31,11 @@
     transform: rotate(360deg);
   }
 }
+.ant-table-thead{
+  background-color: #081833;
+  color: white;
+}
+
+.ant-table-thead div{
+  color: white;
+}
