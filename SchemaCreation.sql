@@ -5,10 +5,7 @@ CREATE TABLE LeaveCategory_ref(
 	TotalLeaves INT,
 	TotalCarryFwdLeaves INT,
 	CarryFwdUpperLimit INT,
-	Status BIT,
+	Status INT,
 	UpdatedDate DATETIME,
 	CreatedDate DATETIME
 );
-
---INSERT INTO LeaveCategory_ref 
---VALUES ('Privileged Leaves','PL',40,12,40,1,GETUTCDATE(), GETUTCDATE())

@@ -5,6 +5,7 @@ using LeaveManagementSystem.Api.ViewModels;
 using LeaveManagementSystem.Data.Enums;
 using LeaveManagementSystem.Data.Models;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace LeaveManagementSystem.Api.Extensions
 {
@@ -23,8 +24,15 @@ namespace LeaveManagementSystem.Api.Extensions
                     .ForMember((target) => target.UpperLimitOfLeaves,
                         (options) => options.MapFrom((source) => source.CarryFwdUpperLimit))
                     .ForMember((target) => target.Status,
-                        (options) => options.MapFrom((source) => source.Status.Value ?
-                            Status.Active.ToString() : Status.InActive.ToString()));
+                        (options) => options.MapFrom((source) => ((Status)source.Status).ToString()));
+
+                configExpression.CreateMap<LeaveCategoryViewModel, LeaveCategory>()
+                    .ForMember((target) => target.CarryFwdUpperLimit,
+                        (options) => options.MapFrom((source) => source.UpperLimitOfLeaves))
+                    .ForMember((target) => target.Status,
+                        (options) => options.MapFrom((source) => Enum.Parse<Status>(source.Status)))
+                    .ForMember((target) => target.UpdatedDate, options => options.Ignore())
+                    .ForMember((target) => target.UpdatedDate, options => options.Ignore());
             });
             services.AddSingleton(configuration.CreateMapper());
         }

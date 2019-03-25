@@ -10,9 +10,15 @@ const {selectors, actions, superReducer} = reduxCornell({
             loaded:false
         },
         LeaveCategories:{
-            data:[],
-            loaded:true,
-            error:null
+            data:{ 
+                    leaveCategories:[], 
+                    newLeaveCategory:null,
+                    updatedLeaveCategory:null,
+                    deleteSucceded:false
+                },
+            loaded:false,
+            error:null,
+            isAjaxProcessing: false
         }
     }
 });

@@ -8,8 +8,14 @@ namespace LeaveManagementSystem.Api.Services.Contracts
 {
     public interface ILeaveCategoryService
     {
-        Task<IEnumerable<LeaveCategoryViewModel>> GetLeaveCategoriesAsync();
+        Task<IEnumerable<LeaveCategoryViewModel>> GetAllAsync();
 
-        Task<LeaveCategoryViewModel> GetLeaveCategoryAsync(int id);
+        Task<LeaveCategoryViewModel> GetAsync(int id);
+
+        Task<LeaveCategoryViewModel> CreateAsync(LeaveCategoryViewModel leaveCategoryViewModel);
+
+        Task<LeaveCategoryViewModel> UpdateAsync(LeaveCategoryViewModel leaveCategoryViewModel);
+
+        Task<bool> DeleteAsync(int id);
     }
 }

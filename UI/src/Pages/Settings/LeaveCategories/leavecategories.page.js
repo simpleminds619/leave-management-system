@@ -7,9 +7,9 @@ class LeaveCategories extends Component {
     state = {
         isFormDrawerVisible: false,
         leaveCategories: [],
-        isLoading: true,
         selectedLeaveCategory: null,
-        isReadOnlyForm: false
+        isReadOnlyForm: false,
+        isDrawerDataRefreshed: false
     }
 
     onView = () => {
@@ -38,7 +38,7 @@ class LeaveCategories extends Component {
                 okText:'Delete',
                 cancelText:'Cancel',
                 onOk:()=>{
-                    console.log("You deleted the item");
+                    this.props.deleteLeaveCategoryAsync(this.state.selectedLeaveCategory.id);
                 },
                 okButtonProps:{
                     type:'primary',
@@ -60,6 +60,11 @@ class LeaveCategories extends Component {
         {
             title: 'Name',
             dataIndex: 'name'
+        },
+        {
+            title: 'Code',
+            dataIndex: 'code',
+            align: 'center'
         },
         {
             title: 'Total Leaves',
@@ -101,21 +106,35 @@ class LeaveCategories extends Component {
 
     componentDidMount() {
         this.props.fetchLeaveCategoriesAsync();
-        if (this.props.isLoading === false) {
+        if (this.props.isAjaxProcessing === false) {
             this.setState({
                 leaveCategories: this.props.leaveCategories,
-                isLoading: this.props.isLoading
             });
         }
     }
 
-    componentDidUpdate(prevProps, prevState) {
-        if ((this.props.isLoading === false && prevProps.isLoading === true) ||
-            (this.state.isLoading === false && prevState.isLoading === true)) {
+    componentDidUpdate(prevProps) {
+        if ((this.props.isAjaxProcessing === false && prevProps.isAjaxProcessing === true && this.props.leaveCategories)) {
             this.setState({
-                leaveCategories: this.props.leaveCategories,
-                isLoading: this.props.isLoading
+                leaveCategories: this.props.leaveCategories
             });
+        }
+        else if((this.props.isAjaxProcessing === false && prevProps.isAjaxProcessing === true && this.props.newLeaveCategory)){
+            this.setState({
+                selectedLeaveCategory: this.props.newLeaveCategory,
+                isDrawerDataRefreshed: true
+            });
+            this.props.fetchLeaveCategoriesAsync();
+        }
+        else if((this.props.isAjaxProcessing === false && prevProps.isAjaxProcessing === true && this.props.updatedLeaveCategory)){
+            this.setState({
+                selectedLeaveCategory: this.props.updatedLeaveCategory,
+                isDrawerDataRefreshed: true
+            });
+            this.props.fetchLeaveCategoriesAsync();
+        }
+        else if((this.props.isAjaxProcessing === false && prevProps.isAjaxProcessing === true && this.props.deleteSucceded)){
+            this.props.fetchLeaveCategoriesAsync();
         }
     }
 
@@ -139,6 +158,16 @@ class LeaveCategories extends Component {
         });
     }
 
+    handleFormSubmit = (leaveCategory) => {
+        if(leaveCategory.id === 0){
+            this.props.createLeaveCategoryAsync(leaveCategory);
+        }
+        else{
+            this.props.updateLeaveCategoryAsync(leaveCategory);
+        }        
+        this.onClose();
+    }
+
     render() {
         return (
             <div style={{ padding: 50 }}>
@@ -147,7 +176,7 @@ class LeaveCategories extends Component {
                     rowKey={(row) => row.id}
                     columns={this.columns}
                     dataSource={this.state.leaveCategories}
-                    loading={this.state.isLoading}
+                    loading={this.props.isAjaxProcessing}
                     bordered
                     title={() => (<div style={{ fontSize: 18, fontWeight: 'bolder', color: '#031e47' }}>Leave Categories</div>)}
                     pagination={false}
@@ -174,9 +203,10 @@ class LeaveCategories extends Component {
                         destroyOnClose={true}
                     >
                         <LeaveCategoryForm onCancel={this.onClose}
-                            onSubmit={this.onClose}
+                            onSubmit={this.handleFormSubmit}
                             readonly={this.state.isReadOnlyForm}
-                            formData={this.state.selectedLeaveCategory} />
+                            formData={this.state.selectedLeaveCategory} 
+                            dataRefreshed={this.state.isDrawerDataRefreshed}/>
                     </Drawer>
                 </div>
             </div>

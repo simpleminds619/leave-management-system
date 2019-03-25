@@ -6,8 +6,10 @@ namespace LeaveManagementSystem.Data.Enums
 {
     public enum Status
     {
+        InActive,
+
         Active,
 
-        InActive
+        Deleted
     }
 }

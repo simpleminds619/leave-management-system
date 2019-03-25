@@ -50,7 +50,7 @@ namespace LeaveManagementSystem.Data.Models
         }
 
         [Column("Status")]
-        public bool? Status
+        public int? Status
         {
             get;
             set;

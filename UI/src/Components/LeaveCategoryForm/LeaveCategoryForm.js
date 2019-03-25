@@ -14,14 +14,14 @@ class LeaveCategoryForm extends PureComponent {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
-                this.props.onSubmit();
+                this.props.onSubmit(values);
             }
         });
     }
 
     validateTotalCarryFwdLeaves = (rule, value, callback) =>{
         const form = this.props.form;
-        if (value && value !== form.getFieldValue('totalLeaves')) {
+        if (value && value > form.getFieldValue('totalLeaves')) {
             callback('Value should not exceed Total Leaves field!');
           } else {
             callback();
@@ -29,7 +29,6 @@ class LeaveCategoryForm extends PureComponent {
     }
     render() {
         const { getFieldDecorator } = this.props.form;
-        console.log(this.props.form);
         return (
             <div>
                 <Form layout="vertical" hideRequiredMark onSubmit={this.handleSubmit}>
@@ -141,7 +140,7 @@ class LeaveCategoryForm extends PureComponent {
                                         ]
                                     })(
                                     <Select disabled={this.props.readonly}>
-                                        <Option value="In-Active">In-Active</Option>
+                                        <Option value="InActive">InActive</Option>
                                         <Option value="Active">Active</Option>
                                     </Select>)
                                 }
