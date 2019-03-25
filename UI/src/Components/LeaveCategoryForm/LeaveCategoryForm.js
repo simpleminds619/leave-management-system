@@ -31,7 +31,7 @@ class LeaveCategoryForm extends PureComponent {
         const { getFieldDecorator } = this.props.form;
         return (
             <div>
-                <Form layout="vertical" hideRequiredMark onSubmit={this.handleSubmit}>
+                <Form layout="horizontal" hideRequiredMark onSubmit={this.handleSubmit}>
                     <Row gutter={16}>
                         <Col span={4}>
                             <Form.Item label="Id">

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Menu, Layout, Icon } from 'antd';
 import { Link,  withRouter } from 'react-router-dom';
+import './SideMenu.css';
 const { Sider } = Layout;
 const { SubMenu } = Menu;
 
@@ -43,15 +44,20 @@ class SideMenu extends Component {
                         <Link to="/leaves" />
                     </Menu.Item>
                     <SubMenu key="settings" style={{ marginLeft: this.state.collapsed ? 0 : -70 }} title={<span><Icon type="setting" theme="filled" /><span>Settings</span></span>}>
-                        <Menu.Item key="/holidayslist" style={{margin:0,paddingRight:43}}>
-                            <Icon type="bars" />
+                        <Menu.Item key="/holidayslist">     
+                            <Icon type="bars" />                           
                             <span>Holidays List</span>
                             <Link to="/holidayslist" />
                         </Menu.Item>
-                        <Menu.Item key="/leaveCategories" style={{margin:0}}>
-                            <Icon type="bars" />
+                        <Menu.Item key="/leaveCategories">  
+                            <Icon type="bars" />                               
                             <span>Leave Categories</span>
                             <Link to="/leaveCategories" />
+                        </Menu.Item>
+                        <Menu.Item key="/locations">   
+                            <Icon type="bars" />                         
+                            <span>Locations</span>
+                            <Link to="/locations" />
                         </Menu.Item>
                     </SubMenu>
                 </Menu>
