@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
 using LeaveManagementSystem.Api.Services;
 using LeaveManagementSystem.Api.Services.Contracts;
+using LeaveManagementSystem.Api.ViewModels;
+using LeaveManagementSystem.Data.Enums;
+using LeaveManagementSystem.Data.Models;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace LeaveManagementSystem.Api.Extensions
 {
@@ -20,7 +19,12 @@ namespace LeaveManagementSystem.Api.Extensions
         {
             var configuration = new MapperConfiguration((configExpression) =>
             {
-
+                configExpression.CreateMap<LeaveCategory, LeaveCategoryViewModel>()
+                    .ForMember((target) => target.UpperLimitOfLeaves,
+                        (options) => options.MapFrom((source) => source.CarryFwdUpperLimit))
+                    .ForMember((target) => target.Status,
+                        (options) => options.MapFrom((source) => source.Status.Value ?
+                            Status.Active.ToString() : Status.InActive.ToString()));
             });
             services.AddSingleton(configuration.CreateMapper());
         }

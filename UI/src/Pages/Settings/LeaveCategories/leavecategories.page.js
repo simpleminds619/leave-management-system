@@ -162,7 +162,7 @@ class LeaveCategories extends Component {
                         <Icon type="plus" /> New Category
                     </Button>
                     <Drawer
-                        title={this.state.selectedLeaveCategory? "Leave Category" : "New Leave Category"}
+                        title={this.state.selectedLeaveCategory ? "Leave Category" : "New Leave Category"}
                         width={500}
                         onClose={this.onClose}
                         visible={this.state.isFormDrawerVisible}

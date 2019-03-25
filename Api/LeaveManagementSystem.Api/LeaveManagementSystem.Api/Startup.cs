@@ -47,7 +47,7 @@ namespace LeaveManagementSystem.Api
 
                     options.ValueProviderFactories.Add(new JsonHttpPostValueProviderFactory());
                 }).SetCompatibilityVersion(CompatibilityVersion.Latest);
-
+            services.AddCors();
             services.AddDataCore<SqlConnection>(Configuration.GetConnectionString("LeaveManagementSystemDb"));
             services.AddMappings();
             services.AddCustomServices();
@@ -65,6 +65,11 @@ namespace LeaveManagementSystem.Api
                 app.UseHsts();
             }
 
+            app.UseCors(builder =>
+                builder.AllowAnyOrigin()
+                       .AllowAnyHeader()
+                       .AllowAnyMethod()
+            );
             app.UseMvc();
         }
     }
