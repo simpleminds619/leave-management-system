@@ -14,6 +14,8 @@ namespace LeaveManagementSystem.Api.Extensions
         public static void AddCustomServices(this IServiceCollection services)
         {
             services.AddTransient<ILeaveCategoryService, LeaveCategoryService>();
+            services.AddTransient<ILocationService, LocationService>();
+            services.AddTransient<IHolidayService, HolidayService>();
         }
 
         public static void AddMappings(this IServiceCollection services)
@@ -32,7 +34,28 @@ namespace LeaveManagementSystem.Api.Extensions
                     .ForMember((target) => target.Status,
                         (options) => options.MapFrom((source) => Enum.Parse<Status>(source.Status)))
                     .ForMember((target) => target.UpdatedDate, options => options.Ignore())
-                    .ForMember((target) => target.UpdatedDate, options => options.Ignore());
+                    .ForMember((target) => target.CreatedDate, options => options.Ignore());
+
+                configExpression.CreateMap<Location, LocationViewModel>()
+                    .ForMember((target) => target.Status,
+                        (options) => options.MapFrom((source) => ((Status)source.Status).ToString()));
+
+                configExpression.CreateMap<LocationHoliday, HolidayViewModel>()
+                    .ForMember((target) => target.Status,
+                        (options) => options.MapFrom((source) => ((Status)source.Status).ToString()))
+                    .ForMember((target) => target.Location, (options) => options.MapFrom((source) => new LocationViewModel()
+                    {
+                        Id = source.LocationId.Value,
+                        Name = source.LocationName
+                    }))
+                    .ForMember((target) => target.Day, (options)=>options.MapFrom((source)=>source.EffectiveDate.Value.DayOfWeek));
+
+                configExpression.CreateMap<HolidayViewModel, LocationHoliday>()
+                    .ForMember((target) => target.Status,
+                        (options) => options.MapFrom((source) => Enum.Parse<Status>(source.Status)))
+                    .ForMember((target) => target.LocationId, options => options.MapFrom((source) => source.Location.Id))
+                    .ForMember((target) => target.UpdatedDate, (options) => options.Ignore())
+                    .ForMember((target) => target.CreatedDate, (options) => options.Ignore());
             });
             services.AddSingleton(configuration.CreateMapper());
         }

@@ -1,0 +1,56 @@
+export default [
+    {
+        "id":1,
+        "year":2018,
+        "location":"India",
+        "reason":"Sankranti",
+        "effectiveDate":"2019-01-14",
+        "day":"Friday",
+        "status":"Active"
+    },
+    {
+        "id":2,
+        "year":2019,
+        "location":"India",
+        "reason":"Siva Rathri",
+        "effectiveDate":"2019-02-05",
+        "day":"Wednesday",
+        "status":"Active"
+    },
+    {
+        "id":3,
+        "year":2019,
+        "location":"India",
+        "reason":"Republic Day",
+        "effectiveDate":"2019-03-18",
+        "day":"Tuesday",
+        "status":"Active"
+    },
+    {
+        "id":4,
+        "year":2019,
+        "location":"India",
+        "reason":"Holi",
+        "effectiveDate":"2019-03-15",
+        "day":"Thursday",
+        "status":"Active"
+    },
+    {
+        "id":5,
+        "year":2019,
+        "location":"India",
+        "reason":"Ugadi",
+        "effectiveDate":"2019-04-06",
+        "day":"Saturday",
+        "status":"Active"
+    },
+    {
+        "id":6,
+        "year":2019,
+        "location":"USA",
+        "reason":"May Day",
+        "effectiveDate":"2019-05-01",
+        "day":"Monday",
+        "status":"Active"
+    }
+]

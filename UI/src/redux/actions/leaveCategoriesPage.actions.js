@@ -3,7 +3,6 @@ import appConfig from '../../AppConfig';
 import axios from 'axios';
 
 const fetchLeaveCategoriesAsync = () =>{
-    console.log(actions);
     let url = appConfig.LmsApiBaseEndpoint+"leavecategories.list"
     return (dispatch)=>{        
         dispatch(actions.setLeaveCategoriesLoaded(true));  
