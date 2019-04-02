@@ -1,9 +1,9 @@
 import { Route, Switch } from 'react-router-dom';
 import HomePage from './Pages/Home';
-import HolidaysListPage from './Pages/Settings/HolidaysList/holidaysList.page';
+import HolidaysListPage from './Pages/Settings/HolidaysList';
 import LeaveCategoriesPage from './Pages/Settings/LeaveCategories';
 import LeavesPage from './Pages/Leaves/leaves.page';
-import LocationsPage from './Pages/Settings/Locations/Locations.page';
+import LocationsPage from './Pages/Settings/Locations';
 
 import React, { Component } from 'react';
 

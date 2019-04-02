@@ -19,6 +19,24 @@ const {selectors, actions, superReducer} = reduxCornell({
             loaded:false,
             error:null,
             isAjaxProcessing: false
+        },
+        Locations:{
+           data:{
+                locations:[]
+           },
+           loaded:false,
+           error:null
+        },
+        Holidays:{
+            data:{
+                holidays:[],
+                createResponse:null,
+                updateResponse:null,
+                deleteResponse:null
+            },
+            loaded:false,
+            error:null,
+            isAjaxProcessing:false
         }
     }
 });
