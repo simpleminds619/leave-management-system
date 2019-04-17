@@ -37,6 +37,17 @@ const {selectors, actions, superReducer} = reduxCornell({
             loaded:false,
             error:null,
             isAjaxProcessing:false
+        },
+        LeavePage:{
+            data:{
+               leaves:[],
+               leaveBank:[],
+               applyLeaveResponse:null               
+            },
+            loaded:false,
+            isAjaxProcessing: false,
+            isLeaveBankLoading: false,
+            error:null 
         }
     }
 });

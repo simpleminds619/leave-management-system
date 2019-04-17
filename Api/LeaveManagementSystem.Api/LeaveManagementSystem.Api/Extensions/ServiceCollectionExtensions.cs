@@ -16,6 +16,7 @@ namespace LeaveManagementSystem.Api.Extensions
             services.AddTransient<ILeaveCategoryService, LeaveCategoryService>();
             services.AddTransient<ILocationService, LocationService>();
             services.AddTransient<IHolidayService, HolidayService>();
+            services.AddTransient<ILeaveService, LeaveService>();
         }
 
         public static void AddMappings(this IServiceCollection services)
@@ -56,6 +57,18 @@ namespace LeaveManagementSystem.Api.Extensions
                     .ForMember((target) => target.LocationId, options => options.MapFrom((source) => source.Location.Id))
                     .ForMember((target) => target.UpdatedDate, (options) => options.Ignore())
                     .ForMember((target) => target.CreatedDate, (options) => options.Ignore());
+
+                configExpression.CreateMap<Leave, LeaveViewModel>()
+                    .ForMember((target) => target.Status, (options) => options.MapFrom((source) => ((LeaveStatus)source.StatusId).ToString()))
+                    .ForMember((target) => target.ApproverComments, (options) => options.Ignore());
+
+                configExpression.CreateMap<LeaveViewModel, Leave>()
+                    .ForMember((target) => target.StatusId, (options) => options.MapFrom((source) => Enum.Parse<LeaveStatus>(source.Status)))
+                    .ForMember((target) => target.UpdatedDate, (options) => options.Ignore())
+                    .ForMember((target) => target.CreatedDate, (options) => options.Ignore())
+                    .ForMember((target) => target.ApprovalDate, (options) => options.Ignore());
+
+                configExpression.CreateMap<LeaveBank, LeaveBankViewModel>();
             });
             services.AddSingleton(configuration.CreateMapper());
         }

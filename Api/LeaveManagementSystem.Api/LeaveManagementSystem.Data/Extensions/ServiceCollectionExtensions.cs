@@ -30,7 +30,7 @@ namespace LeaveManagementSystem.Data.Extensions
             services.AddTransient<ILeaveCategoryRepository, LeaveCategoryRepository>();
             services.AddTransient<ILocationRepository, LocationRepository>();
             services.AddTransient<IHolidayRepository, HolidayRepository>();
+            services.AddTransient<ILeaveRepository, LeaveRepository>();
         }
-
     }
 }
