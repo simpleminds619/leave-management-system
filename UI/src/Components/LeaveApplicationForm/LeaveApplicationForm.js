@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Row, Col, Input, InputNumber, Select, DatePicker, Button } from 'antd';
+import { Form, Row, Col, Input, InputNumber, Select, DatePicker, Button, Tooltip } from 'antd';
 import './LeaveApplicationForm.css';
 import moment from 'moment';
 
@@ -8,9 +8,8 @@ const { TextArea } = Input;
 
 class LeaveApplicationForm extends Component {
 
-    componentDidMount(){
+    componentDidMount() {
         let { formData } = this.props;
-        console.log(formData);
         if (formData) {
             this.props.form.setFieldsValue({
                 categoryId: formData.categoryId,
@@ -20,6 +19,7 @@ class LeaveApplicationForm extends Component {
                 id: formData.id
             });
         }
+        console.log("form", this.props.holidaysList);
     }
 
     handleSubmit = (e) => {
@@ -28,7 +28,6 @@ class LeaveApplicationForm extends Component {
             if (!err) {
                 values.startDate = values.startDate.format('YYYY-MM-DD');
                 values.endDate = values.endDate.format('YYYY-MM-DD');
-                console.log(values);
                 this.props.onSubmit(values);
             }
         });
@@ -43,9 +42,16 @@ class LeaveApplicationForm extends Component {
         }
     }
 
+    isHoliday = (current) => {
+        const matchedHoliday = this.props.holidaysList.find(h =>
+            current.format('YYYY-MM-DD') === moment(h.effectiveDate).format('YYYY-MM-DD') 
+            && h.location.name === 'Hyderabad'); //TODO: Get the location from user profile
+        return current && matchedHoliday;
+    }
+
     render() {
         let { getFieldDecorator } = this.props.form;
-        const leaveTypeOptions = this.props.leaveCategories.map((type)=>{
+        const leaveTypeOptions = this.props.leaveCategories.map((type) => {
             return (
                 <Option key={type.id} value={type.id}>{type.name}</Option>
             );
@@ -91,7 +97,32 @@ class LeaveApplicationForm extends Component {
                                     rules: [{ required: true, message: 'Required!' }
                                     ]
                                 })(
-                                    <DatePicker placeholder="Select start date" style={{ width: '100%' }} />
+                                    <DatePicker
+                                        placeholder="Select start date"
+                                        style={{ width: '100%' }}
+                                        format="YYYY-MM-DD"
+                                        disabledDate={this.isHoliday}
+                                        dateRender={(current) => {
+                                            const style = {};
+                                            if (this.isHoliday(current)) {
+                                                style.border = '1px solid #1890ff';
+                                                style.borderRadius = '50%';
+                                                return (
+                                                    <Tooltip placement="top" title={this.props.holidaysList.find(h =>
+                                                        current.format('YYYY-MM-DD') === moment(h.effectiveDate).format('YYYY-MM-DD')).reason}>
+                                                        <div className="ant-calendar-date" style={style}>
+                                                            {current.date()}
+                                                        </div>
+                                                    </Tooltip>
+                                                );
+                                            }
+                                            return (                                            
+                                                <div className="ant-calendar-date">
+                                                    {current.date()}
+                                                </div>
+                                            );
+                                        }}
+                                    />
                                 )}
                             </Form.Item>
                         </Col>
@@ -99,7 +130,7 @@ class LeaveApplicationForm extends Component {
                             <Form.Item label="End Date :">
                                 {getFieldDecorator('endDate', {
                                     rules: [{ required: true, message: 'Required!' },
-                                        {validator: this.validateEndDate}
+                                    { validator: this.validateEndDate }
                                     ]
                                 })(
                                     <DatePicker placeholder="Select end date" style={{ width: '100%' }} />
@@ -111,7 +142,7 @@ class LeaveApplicationForm extends Component {
                         <Col span={24}>
                             <Form.Item label="Reason :">
                                 {getFieldDecorator('reason', {
-                                    rules: [{ required: true, message: 'Required!' }                                   
+                                    rules: [{ required: true, message: 'Required!' }
                                     ]
                                 })(
                                     <TextArea placeholder="Reason for the leave" style={{ width: '100%' }} />
@@ -138,4 +169,4 @@ class LeaveApplicationForm extends Component {
     }
 }
 
-export default Form.create({name:'LeaveApplicationForm'})(LeaveApplicationForm);
+export default Form.create({ name: 'LeaveApplicationForm' })(LeaveApplicationForm);

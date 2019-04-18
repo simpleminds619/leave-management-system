@@ -10,13 +10,15 @@ class LeavesPage extends Component {
             leaveBank: [],
             leaveCategories: [],
             isApplyLeaveFormDrawerVisible: false,
-            selectedLeave:null
+            selectedLeave:null,
+            holidaysList: []
         }
     }
     componentDidMount() {
         this.props.fetchLeaveHistoryAsync(1); //TODO: Replace it with loggedin userId
         this.props.fetchLeaveCategoriesAsync();
-        this.props.fetchLeaveBankDataAsync(1);   
+        this.props.fetchLeaveBankDataAsync(1);
+        this.props.fetchHolidaysListAsync();   
     }
 
     componentDidUpdate(prevProps) {
@@ -28,11 +30,17 @@ class LeavesPage extends Component {
         }
         
         if (prevProps.isLeaveBankDataLoading === true && this.props.isLeaveBankDataLoading === false && this.props.leaveBankResponse) {
-            console.log("setting leavebankdata")
             this.setState({
                 leaveBank: this.props.leaveBankResponse
             });
         }
+        if (prevProps.isHolidaysListLoading === true && this.props.isHolidaysListLoading === false && this.props.holidaysList) {
+            console.log("setting holidayslist", this.props.holidaysList)
+            this.setState({
+                holidaysList: this.props.holidaysList
+            });
+        }
+
         if(prevProps.isLoading === true && this.props.isLoading === false && this.props.applyLeaveResponse && this.props.applyLeaveResponse.id !== 0){
             this.setState({
                 isApplyLeaveFormDrawerVisible:false
@@ -43,6 +51,7 @@ class LeavesPage extends Component {
     }
 
     applyLeave = ()=>{
+        
         this.setState({
             isApplyLeaveFormDrawerVisible:true
         });
@@ -135,6 +144,7 @@ class LeavesPage extends Component {
                             onCancel={this.onClose}
                             isReadOnlyForm={false}
                             formData={this.state.selectedLeave}
+                            holidaysList={this.state.holidaysList.filter(h=>h.status === 'Active')}
                         />
                     </Drawer>
                 </div>
@@ -143,7 +153,6 @@ class LeavesPage extends Component {
     }
 
     renderLeaveBankSection = () => {
-        console.log(this.state.leaveBank);
         const columns = [
             {
                 title: 'Leave Category',

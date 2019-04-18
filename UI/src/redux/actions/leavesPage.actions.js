@@ -9,7 +9,6 @@ const fetchLeaveHistoryAsync = (userId) =>{
         dispatch(actions.setLeavePageLoaded(false));
         axios.post(url, {userId})
             .then(response=>{
-                console.log(response.data);
                 dispatch(actions.setLeavePageData({leaves:response.data.leaves}));
             })
             .catch(error=>{
@@ -22,21 +21,17 @@ const fetchLeaveHistoryAsync = (userId) =>{
 }
 
 const applyLeaveAsync = (leave) =>{
-    console.log(leave,{leave}); 
     var url = appConfig.LmsApiBaseEndpoint + "leave.apply"
     return dispatch =>{
         dispatch(actions.setLeavePageIsAjaxProcessing(true));
         axios.post(url,leave)
             .then(response=>{
-                dispatch(actions.setLeavePageData({applyLeaveResponse:response.data.leave}));
-                console.log(response);
-            })
+                dispatch(actions.setLeavePageData({applyLeaveResponse:response.data.leave}));            })
             .catch(error=>{
                 dispatch(actions.setLeavePageError(error));
                 console.log(error);
             })
             .finally(()=>{
-                console.log("finally block");
                 dispatch(actions.setLeavePageIsAjaxProcessing(false));
             })
     }
@@ -49,14 +44,12 @@ const fetchLeaveBankDataAsync = userId => {
         axios.post(url,{userId})
             .then(response=>{
                 dispatch(actions.setLeavePageData({leaveBank:response.data.leaveBank}));
-                console.log(response);
             })
             .catch(error=>{
                 dispatch(actions.setLeavePageError(error));
                 console.log(error);
             })
             .finally(()=>{
-                console.log("finally block");
                 dispatch(actions.setLeavePageIsLeaveBankLoading(false));
             })
     }

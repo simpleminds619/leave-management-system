@@ -7,7 +7,6 @@ const { Option } = Select;
 
 class HolidayForm extends PureComponent {
     componentDidMount() {
-        console.log(this.props.formData);
         let { formData } = this.props;
         if (formData) {
             this.props.form.setFieldsValue({
@@ -30,7 +29,6 @@ class HolidayForm extends PureComponent {
                     id: values.location,
                     name: this.props.locationList.filter((value) => value.id === values.location)[0].name
                 }
-                console.log(values);
                 this.props.onSubmit(values);
             }
         });

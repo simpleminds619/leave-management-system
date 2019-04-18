@@ -20,12 +20,10 @@ const fetchHolidaysListAsync = () =>{
 
 const createHolidayAsync = (holiday) =>{
     let url = appConfig.LmsApiBaseEndpoint+"holiday.create"
-    console.log(url);
     return (dispatch)=>{        
         dispatch(actions.setHolidaysLoaded(true));
         dispatch(actions.setHolidaysIsAjaxProcessing(true))
         axios.post(url, holiday).then((response)=>{
-            console.log(response);
             dispatch(actions.setHolidaysData({createResponse:response.data.holiday}));
         }).catch((error)=>{
             console.log(error);

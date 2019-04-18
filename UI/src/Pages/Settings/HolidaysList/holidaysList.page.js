@@ -56,12 +56,11 @@ class HolidaysList extends Component {
         }
     }
 
-    unique = (value, index, self) => {
+    unique = (value, index, self) => {        
         return self.indexOf(value) === index;
     }
 
     handleChange = (pagination, filters, sorter) => {
-        console.log('Various parameters', pagination, filters, sorter);
         this.setState({
             filteredInfo: filters
         });
@@ -93,9 +92,7 @@ class HolidaysList extends Component {
     };
 
     handleSubmit = (holiday) =>{
-        console.log("holiday",holiday);
         if(!holiday.id){
-            console.log("creating...")
             this.props.createHolidayAsync(holiday);
         }
         else{
@@ -139,14 +136,22 @@ class HolidaysList extends Component {
     render() {
         let { filteredInfo } = this.state;
         filteredInfo = filteredInfo || {};
-        let uniqueYears = _.map(this.state.holidaysList, 'year').filter(this.unique); //;
+        let uniqueYears = _.map(this.state.holidaysList, 'year').filter(this.unique);
         let yearFilterOptions = _.map(uniqueYears, (year) => {
             return {
                 'text': year,
                 'value': year
             };
         });
-        let uniqueLocations = _.map(this.state.holidaysList, 'location').filter(this.unique);
+        const locations = _.map(this.state.holidaysList,'location');
+        const uniqueLocations = [];
+        const map = new Map();
+        for(const item of locations){
+            if(!map.has(item.id)){
+                map.set(item.id, true);
+                uniqueLocations.push(item)
+            }
+        }
         let locationFilterOptions = _.map(uniqueLocations, (location) => {
             return {
                 'text': location.name,

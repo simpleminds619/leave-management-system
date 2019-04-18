@@ -1,3 +1,3 @@
 export default {
-    "LmsApiBaseEndpoint":"http://localhost:56315/api/v1/"
+    "LmsApiBaseEndpoint":"http://localhost:5000/api/v1/"
 }
